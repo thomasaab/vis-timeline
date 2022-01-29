@@ -1,0 +1,7 @@
+examples\timeline\other\video.html
+examples\timeline\styling\gridStyling.html
+lib\timeline\Core.js
+lib\timeline\TimeStep.js
+lib\timeline\component\CustomTime.js
+lib\timeline\component\TimeAxis.js
+changedFiles.txt

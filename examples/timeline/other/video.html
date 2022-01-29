@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Timeline | Basic demo</title>
+
+    <style type="text/css">
+      body,
+      html {
+        font-family: sans-serif;
+      }
+    </style>
+
+    <script src="../../../standalone/umd/vis-timeline-graph2d.min.js"></script>
+  </head>
+  <body>
+    <p>
+      A basic timeline. You can move and zoom the timeline, and select items 2.
+    </p>
+
+    <div id="mytimeline"></div>
+
+    <script type="text/javascript">
+      // DOM element where the Timeline will be attached
+
+      var timeline_items = new vis.DataSet();
+      var timeline_groups = new vis.DataSet();
+
+      var min = new Date(1970, 0, 1, 0, 0, 0, 0);
+      var max = new Date(1970, 0, 1, 1, 1, 30, 0);
+
+      var start = new Date(1970, 0, 1, 0, 0, 0, 0);
+      var end = new Date(1970, 0, 1, 0, 0, 0, 80);
+
+      // specify options
+      var options = {
+        width: "500px",
+        height: "200px",
+
+        align: "box",
+        groupHeightMode: "fixed",
+        maxMinorChars: 1,
+
+        zoomKey: "ctrlKey",
+        horizontalScroll: true,
+        verticalScroll: true,
+        orientation: "top",
+        moveable: true,
+        zoomable: true,
+        editable: true,
+        min: min,
+        max: max,
+        start: start,
+        end: end,
+        zoomMax: 10000000,
+        zoomMin: 1,
+
+        stack: true,
+        multiselect: true,
+        multiselectPerGroup: true,
+        showCurrentTime: false,
+        showMajorLabels: false,
+        showMinorLabels: false,
+
+        editable: {
+          add: true, // add new items by double tapping
+          updateTime: true, // drag items horizontally
+          updateGroup: true, // drag items from one group to another
+          remove: false, // delete an item by tapping the delete button top right
+          overrideItems: true, // allow these options to override item.editable
+        },
+
+        // onRemove: function (item, callback) {
+        //   callback(item);
+        // },
+
+        // onMove: function (item, callback) {
+        //   callback(item);
+        // },
+        // onMoving: function (item, callback) {
+        //   let currentItem = timeline_items.get(item.id);
+        //   if (item.start < limit_min) item.start = limit_min;
+        //   callback(item);
+        // },
+
+        rollingMode: {
+          follow: false,
+          offset: 0.5,
+        },
+
+        snap: function (date, scale, step) {
+          var hour = 1;
+          return Math.round(date / hour) * hour;
+          return 2;
+        },
+        // margin: { axis: 0 },
+        // padding: 1,
+
+        // format: {
+        //   minorLabels: {
+        //     millisecond: "SSS",
+        //     second: "s",
+        //     minute: "HH:mm:ss",
+        //     hour: "HH:mm:ss",
+        //     weekday: "HH:mm:ss",
+        //     day: "HH:mm:ss",
+        //     week: "HH:mm:ss",
+        //     month: "HH:mm:ss",
+        //     year: "HH:mm:ss",
+        //   },
+        //   majorLabels: {
+        //     millisecond: "HH:mm:ss",
+        //     second: "HH:mm:ss",
+        //     minute: "HH:mm:ss",
+        //     hour: "",
+        //     weekday: "",
+        //     day: "",
+        //     week: "",
+        //     month: "",
+        //     year: "",
+        //   },
+        // },
+
+        format: {
+          minorLabels: {
+            millisecond: "SSS",
+            second: "s",
+            minute: "HH:mm:ss",
+            hour: "HH:mm:ss",
+            weekday: "HH:mm:ss",
+            day: "HH:mm:ss",
+            week: "HH:mm:ss",
+            month: "HH:mm:ss",
+            year: "HH:mm:ss",
+          },
+          majorLabels: {
+            millisecond: "",
+            second: "",
+            minute: "",
+            hour: "",
+            weekday: "",
+            day: "",
+            week: "",
+            month: "",
+            year: "",
+          },
+        },
+      };
+
+      var video_item_start1 = new Date(1970, 0, 1, 0, 0, 0, 5);
+      var video_item_end1 = new Date(1970, 0, 1, 0, 0, 0, 20);
+
+      var video_item_start2 = new Date(1970, 0, 1, 0, 0, 0, 50);
+      var video_item_end2 = new Date(1970, 0, 1, 0, 0, 0, 100);
+
+      var video_item_start3 = new Date(1970, 0, 1, 0, 0, 0, 15);
+      var video_item_end3 = new Date(1970, 0, 1, 0, 0, 0, 200);
+
+      var limit_min = new Date(1970, 0, 1, 0, 0, 0, 000);
+
+      var timeline_items = new vis.DataSet([
+        {
+          id: 1,
+          // group: "group",
+          // segment_start: 10.5,
+          // segment_end: 20.9,
+          // video_start: 0,
+          // video_length: 31.1,
+          start: video_item_start1,
+          end: video_item_end1,
+          content: "video 1",
+        },
+        {
+          id: 2,
+          // group: "group",
+          // segment_start: 10.5,
+          // segment_end: 20.9,
+          // video_start: 4.3,
+          // video_length: 18.5,
+          start: video_item_start2,
+          end: video_item_end2,
+          content: "video 2",
+        },
+        {
+          id: 3,
+          // group: "group",
+          // segment_start: 10.5,
+          // segment_end: 20.9,
+          // video_start: 7.4,
+          // video_length: 25.7,
+          start: video_item_start3,
+          end: video_item_end3,
+          content: "video 3",
+        },
+      ]);
+
+      var timeline_groups = new vis.DataSet();
+
+      // Set callback to run when API is loaded
+      var timeline = new vis.Timeline(
+        document.getElementById("mytimeline"),
+        timeline_items,
+
+        options
+      );
+
+      timeline.addCustomTime(new Date("1970, 00, 01, 00, 00, 00, 000"));
+
+      timeline.setCustomTime(new Date(1970, 0, 1, 00, 00, 00, 000));
+
+      timeline.setCustomTimeTitle("00:00:00,000");
+
+      timeline.setOptions(options);
+
+      timeline.setGroups(null);
+
+      function move(percentage) {
+        var range = timeline.getWindow();
+        var interval = range.end - range.start;
+
+        timeline.setWindow({
+          start: range.start.valueOf() - interval * percentage,
+          end: range.end.valueOf() - interval * percentage,
+        });
+      }
+    </script>
+  </body>
+</html>
